@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ chat.name }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>{{ chat.name }}</h1>
+
+        <div class="chat-container">
+            <div class="chatbg"></div>
+            <ul id='messages'>
+            </ul>
+        </div>
+        <form action="" onsubmit="sendMessage(event)">
+            <div class="input-container">
+                <input type="text" id="messageText" autocomplete="off"/>
+                <button>^</button>
+            </div>
+        </form>
+<script src="/static/js/chat.js"></script>
+</body>
+</html>

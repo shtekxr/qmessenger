@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>qmessenger</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div>
+        <h1>
+            qmessenger
+        </h1>
+    </div>
+    <div>
+        <div>
+            <h1>
+                log in
+            </h1>
+        </div>
+        <div>
+            <form action="/auth/jwt/login" method="post">
+                <h2>email</h2>
+                <input type="text" name="username" id="username" required>
+                <h2>password</h2>
+                <input type="password" name="password" id="password" required>
+                <div>
+                    <button type="submit">log in</button>
+                </div>
+
+            </form>
+        </div>
+        <div>
+            <form action="/register">
+                <button type="submit">register</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

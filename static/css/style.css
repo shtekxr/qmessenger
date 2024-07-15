@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+
+
+body {
+    font-family: 'Jua', sans-serif;
+    /* background: linear-gradient(to bottom, #FFECDA, #FFB4AF); */
+    background-image: linear-gradient(to bottom, #FFECDA, #FFB4AF);
+    background-repeat: no-repeat;
+    height: 100vh;
+    /*margin: 10px 0;*/
+    padding: 10%;
+    padding-top: 0;
+    display: flex;
+    justify-content: center, top;
+    flex-direction: column;
+}
+
+
+.modal-background {
+    display: none;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+h1 {
+    display: flex;
+    justify-content: center;
+    color: #FFC6C6;
+    font-size: 300%;
+
+    text-shadow:
+    6px 0 0 white, /*right */
+    0 6px 0 white, /*top */
+    -6px 0 0 white, /*left */
+    0 -6px 0 white; /*bottom */
+}
+
+h2 {
+    display: flex;
+    justify-content: center;
+    color: #FFC6C6;
+    font-size: 150%;
+
+    text-shadow:
+    3px 0 0 white, /*right */
+    0 3px 0 white, /*top */
+    -3px 0 0 white, /*left */
+    0 -3px 0 white; /*bottom */
+}
+
+input {
+    font-family: 'Jua', sans-serif;
+    font-size: 200%;
+    text-align: center;
+    margin: 10px 0;
+    width: 50%;
+    height: 10%;
+    border: white;
+    border-radius: 20px;
+}
+
+/*div {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*}*/
+
+
+
+
+button {
+
+    appearance: button;
+    backface-visibility: hidden;
+    background-color: white;
+    border-radius: 17px;
+    border-width: 0;
+    box-sizing: border-box;
+    color: #FFEFC6;
+
+
+
+    text-shadow:
+    2px 0 0 #FFCD4B, /*right */
+    0 2px 0 #FFCD4B, /*top */
+    -2px 0 0 #FFCD4B, /*left */
+    0 -2px 0 #FFCD4B; /*bottom */
+
+    cursor: pointer;
+    font-family: 'Jua', sans-serif;
+    font-size: 125%;
+    /*height: 10%;*/
+    /*width: 150px;*/
+    /*line-height: 1.15;*/
+    margin: 12px 0 0;
+    outline: none;
+    overflow: hidden;
+    padding: 0 25px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    transform: translateZ(0);
+    transition: all .2s,box-shadow .08s ease-in;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+
+}
+
+
+.item {
+    appearance: button;
+    backface-visibility: hidden;
+    background-color: white;
+    border-radius: 17px;
+    border-width: 0;
+    box-sizing: border-box;
+    color: #FFEFC6;
+    text-shadow:
+    2px 0 0 #FFCD4B, /*right */
+    0 2px 0 #FFCD4B, /*top */
+    -2px 0 0 #FFCD4B, /*left */
+    0 -2px 0 #FFCD4B; /*bottom */
+
+    cursor: pointer;
+    font-family: 'Jua', sans-serif;
+    font-size: 125%;
+    height: 100px;
+    line-height: 1.15;
+    margin: 12px 0 0;
+    outline: none;
+    overflow: hidden;
+    padding: 0 25px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    transform: translateZ(0);
+    transition: all .2s,box-shadow .08s ease-in;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 200px;
+  }
+
+.chatbg {
+    position: absolute;
+    /*display: block;*/
+    /*top: 200px;*/
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    /*height: 500px;*/
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    z-index: 1;
+}
+
+.chat-container {
+    position: relative;
+    z-index: 2;
+    height: calc(100% - 100px); /* Adjust this value to leave space for the form */
+    overflow-y: auto;
+}
+
+.input-container {
+    display: flex;
+}
+.input-container input {
+    flex: 1;
+    width: auto;
+    height: auto;
+}
+.input-container button {
+    font-size: medium;
+    flex: 0;
+    width: auto;
+    height: auto;
+}
+
+#messages {
+    position: relative;
+    list-style-type: none;
+    padding: 10px;
+    margin: 10px;
+    z-index: 2;
+}
+.send_text {
+    position: relative;
+    z-index: 2;
+}
+
+.background {
+    width: 90%;
+    height: 90%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный цвет */
+    border-radius: 15px; /* Скругленные углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для эффекта */
+}
+
+.data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 50px;
+    background-color: white;
+    border-radius: 20px;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>qmessenger</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div>
+        <h1>
+            {{ my_username }}
+        </h1>
+    </div>
+    <div>
+        <div>
+            <button id="new_chat">+</button>
+            <div id="myModal" class="modal-background">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form action="/chats" method="post">
+                        <h2>chat name</h2>
+                        <input type="text" name="new_chat_name" id="new_chat_name">
+<!--                        <h2>chat description</h2>-->
+<!--                        <input type="text" name="new_chat_desc" id="new_chat_desc">-->
+                        <button type="submit">add chat</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div>
+            {% for chat in chats %}
+                <form action="/chats/{{ chat.id }}" method="get">
+                    <button type="submit">{{ chat.name }}</button>
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+<script src="/static/js/chats.js"></script>
+</body>
+</html>
