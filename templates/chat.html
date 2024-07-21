@@ -7,7 +7,22 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1>{{ chat.name }}</h1>
+    <div class="top-panel">
+        <button id="top-back"><-</button>
+        <h1 id="top-name">{{ chat.name }}</h1>
+        <button id="top-invite">+</button>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <button id="close">x</button>
+                <form action="/invite_user" method="get">
+                    <label>username</label>
+                    <input type="text" name="invite_username" id="invite_username">
+                </form>
+            </div>
+        </div>
+    </div>
+
 
         <div class="chat-container">
             <div class="chatbg"></div>

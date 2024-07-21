@@ -15,23 +15,21 @@
     <div>
         <div>
             <button id="new_chat">+</button>
-            <div id="myModal" class="modal-background">
+            <div id="modal" class="modal">
                 <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <form action="/chats" method="post">
-                        <h2>chat name</h2>
-                        <input type="text" name="new_chat_name" id="new_chat_name">
-<!--                        <h2>chat description</h2>-->
-<!--                        <input type="text" name="new_chat_desc" id="new_chat_desc">-->
-                        <button type="submit">add chat</button>
-                    </form>
+                    <button class="close">x</button>
+
+                    <form action="/chats" method="post"></form>
+                    <label>chat name</label>
+                    <input type="text" name="new_chat_name" id="new_chat_name">
+                    <button type="submit">add chat</button>
                 </div>
             </div>
         </div>
-        <div>
+        <div class="chat-list">
             {% for chat in chats %}
                 <form action="/chats/{{ chat.id }}" method="get">
-                    <button type="submit">{{ chat.name }}</button>
+                    <button class="list-item" type="submit">{{ chat.name }}</button>
                 </form>
             {% endfor %}
         </div>
