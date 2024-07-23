@@ -14,15 +14,15 @@
     </div>
     <div>
         <div>
-            <button id="new_chat">+</button>
+            <button id="new_chat">create chat</button>
             <div id="modal" class="modal">
                 <div class="modal-content">
-                    <button class="close">x</button>
-
-                    <form action="/chats" method="post"></form>
-                    <label>chat name</label>
+                    <div class="top-modal">
+                        <button class="close">❌</button>
+                        <h2>chat name</h2>
+                    </div>
                     <input type="text" name="new_chat_name" id="new_chat_name">
-                    <button type="submit">add chat</button>
+                    <button id="create-chat-btn">add chat</button>
                 </div>
             </div>
         </div>

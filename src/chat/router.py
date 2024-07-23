@@ -1,6 +1,7 @@
+import json
 from typing import List
 
-from fastapi import APIRouter, Depends, Form, WebSocket, WebSocketDisconnect, WebSocketException
+from fastapi import APIRouter, Depends, Form, WebSocket, WebSocketDisconnect, WebSocketException, HTTPException
 from sqlalchemy import select, insert, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
@@ -22,9 +23,6 @@ router = APIRouter(
 templates = Jinja2Templates(directory='templates')
 
 
-
-
-
 @router.get('/')
 async def get_user_chats(request: Request, data_current_user: User = Depends(current_user),
                          session: AsyncSession = Depends(get_async_session)):
@@ -37,7 +35,7 @@ async def get_user_chats(request: Request, data_current_user: User = Depends(cur
 
 
 @router.post('/')
-async def create_chat(new_chat_name: str = Form(...), data_current_user: User = Depends(current_user),
+async def create_chat(new_chat_name: str, data_current_user: User = Depends(current_user),
                       session: AsyncSession = Depends(get_async_session)):
     new_chat = ChatCreate(name=new_chat_name)
     new_chat.user_ids.append(data_current_user.id)
@@ -54,7 +52,7 @@ async def create_chat(new_chat_name: str = Form(...), data_current_user: User = 
     await session.commit()
     print(f'User chat id = {data_current_user.chat_ids}')
 
-    return {'status': 'ok'}
+    return {'message': f'Chat {new_chat_name} created'}
 
 
 @router.delete('/')
@@ -77,8 +75,65 @@ async def delete_chat(chat_id: int = Chat.id, session: AsyncSession = Depends(ge
 @router.get('/{chat_id}')
 async def get_chat(request: Request, chat_id: int, session: AsyncSession = Depends(get_async_session)):
     chat = await session.get(Chat, chat_id)
+    users_id = chat.user_ids
+    users = []
+    for user_id in users_id:
+        user = await session.get(User, user_id)
+        users.append(user)
 
-    return templates.TemplateResponse('chat.html', {'request': request, 'chat': chat})
+    return templates.TemplateResponse('chat.html', {'request': request, 'chat': chat, 'users': users})
+
+
+@router.patch('/{chat_id}/{username}')
+async def invite_user(chat_id: int, username: str, session: AsyncSession = Depends(get_async_session)):
+    chat = await session.get(Chat, chat_id)
+    result = await session.execute(select(User).where(User.username == username))
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.id in chat.user_ids:
+        raise HTTPException(status_code=400, detail="User already in chat")
+
+    chat_ids = user.chat_ids
+    chat_ids.append(chat_id)
+    stmt_user = update(User).where(User.username == username).values(chat_ids=chat_ids)
+
+    user_ids = chat.user_ids
+    user_ids.append(user.id)
+    stmt_chat = update(Chat).where(Chat.id == chat_id).values(user_ids=user_ids)
+
+    await session.execute(stmt_user)
+    await session.execute(stmt_chat)
+    await session.commit()
+
+    return {"message": f"User {username} added to chat"}
+
+
+@router.patch('/{chat_id}/kick/{username}')
+async def kick_user(chat_id: int, username: str, session: AsyncSession = Depends(get_async_session)):
+    chat = await session.get(Chat, chat_id)
+    result = await session.execute(select(User).where(User.username == username))
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.id not in chat.user_ids:
+        raise HTTPException(status_code=400, detail="User not in chat")
+    if chat_id not in user.chat_ids:
+        raise HTTPException(status_code=400, detail="User not in chat")
+
+    chat_ids = user.chat_ids
+    chat_ids.remove(chat_id)
+    stmt_user = update(User).where(User.username == username).values(chat_ids=chat_ids)
+
+    user_ids = chat.user_ids
+    user_ids.remove(user.id)
+    stmt_chat = update(Chat).where(Chat.id == chat_id).values(user_ids=user_ids)
+
+    await session.execute(stmt_user)
+    await session.execute(stmt_chat)
+    await session.commit()
+
+    return {"message": f"User {username} kicked from chat"}
 
 
 class ConnectionManager:
@@ -117,7 +172,11 @@ async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.broadcast(f"{user.username}: {data}")
+            message = {
+                'username': user.username,
+                'message': data
+            }
+            await manager.broadcast(json.dumps(message))
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 

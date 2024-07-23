@@ -20,7 +20,9 @@ app = FastAPI(
 connected_users = {}
 
 origins = [
-    "http://localhost:8000",
+    "http://0.0.0.0",
+    "http://localhost",
+    "http://92.246.136.94"
 ]
 
 app.add_middleware(
@@ -82,7 +84,10 @@ templates = Jinja2Templates(directory='templates')
 
 @app.get('/')
 async def get_home(request: Request):
-    return templates.TemplateResponse('home.html', {'request': request})
+    return templates.TemplateResponse('index.html', {'request': request})
+
+
+
 
 
 @app.get('/register')
