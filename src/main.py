@@ -23,6 +23,11 @@ origins = [
     "http://0.0.0.0",
     "http://localhost",
     "http://92.246.136.94"
+    "http://rizem.ru"
+    "https://0.0.0.0",
+    "https://localhost",
+    "https://92.246.136.94",
+    "https://rizem.ru",
 ]
 
 app.add_middleware(
@@ -35,7 +40,7 @@ app.add_middleware(
 )
 
 
-@app.middleware("http")
+@app.middleware("https")
 async def redirect_to_chats_if_logged_in(request: Request, call_next):
     if request.url.path == "/" and request.cookies.get("log"):
         return RedirectResponse(url="/chats", status_code=303)
@@ -85,9 +90,6 @@ templates = Jinja2Templates(directory='templates')
 @app.get('/')
 async def get_home(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
-
-
-
 
 
 @app.get('/register')
