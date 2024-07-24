@@ -37,7 +37,7 @@ function sendMessage(event) {
 
     // message.appendChild(content);
     // message.appendChild(timeElement);
-    message.classList.add('sent-message');
+    // message.classList.add('sent-message');
 
     const messages = document.getElementById('messages');
     messages.appendChild(message);
