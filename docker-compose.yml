@@ -1,0 +1,25 @@
+networks:
+  dev:
+
+
+services:
+  nginx:
+    image: almasry/nginx-stable
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - './nginx.conf:/etc/nginx/nginx.conf'
+      - /etc/ssl/rizem.crt:/etc/ssl/rizem.crt
+      - /etc/ssl/rizem.key:/etc/ssl/rizem.key
+      - /etc/ssl/ca.crt:/etc/ssl/ca.crt
+    depends_on:
+      - backend
+    networks:
+      - dev
+
+  backend:
+    build:
+      context: ./
+    networks:
+      - dev

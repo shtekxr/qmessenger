@@ -8,13 +8,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.auth.base_config import auth_backend
 from src.auth.schemas import UserRead, UserCreate, UserUpdate
-from chat.router import router as router_chat
+from src.chat.router import router as router_chat
 
-from depends import fastapi_users
+from src.depends import fastapi_users
 
 
 app = FastAPI(
-    title='QMessenger'
+    title='qmessenger'
 )
 
 connected_users = {}

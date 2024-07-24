@@ -16,7 +16,7 @@ ws.onmessage = function(event) {
     messageElement.textContent = messageData.message;
 
     usernameElement.classList.add('username');
-    messageElement.classList.add('received-message');
+    messageWrapper.classList.add('received-message');
 
 
     messageWrapper.appendChild(usernameElement);
@@ -30,7 +30,13 @@ function sendMessage(event) {
     const input = document.getElementById('messageText');
     const message = document.createElement('div');
     const content = document.createTextNode(input.value);
-    message.appendChild(content);
+    const time = new Date().toLocaleTimeString();
+
+    const timeElement = document.createElement('span');
+    timeElement.textContent = ` (${time})`;
+
+    // message.appendChild(content);
+    // message.appendChild(timeElement);
     message.classList.add('sent-message');
 
     const messages = document.getElementById('messages');
