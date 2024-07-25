@@ -1,3 +1,4 @@
+import datetime
 from typing import List, Optional
 from pydantic import BaseModel
 
@@ -22,3 +23,10 @@ class ChatUpdate(BaseModel):
 
 class ChatDelete(BaseModel):
     id: int
+
+
+class MessageCreate(BaseModel):
+    user_id: int
+    chat_id: int
+    message: str
+    date: datetime.datetime

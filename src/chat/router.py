@@ -13,7 +13,7 @@ from src.auth.base_config import auth_backend
 from src.auth.manager import get_user_manager
 from src.auth.models import User
 from src.chat.models import Chat, Message
-from src.chat.schemas import ChatCreate
+from src.chat.schemas import ChatCreate, MessageCreate
 from src.database import get_async_session
 from src.depends import current_user
 
@@ -194,12 +194,23 @@ manager = ConnectionManager()
 
 
 @router.websocket('/{chat_id}/ws')
-async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user_from_cookie),
-                             session: AsyncSession = Depends(get_async_session),
-                             chat: Chat = Depends(get_chat)):
+async def websocket_endpoint(websocket: WebSocket, chat_id: int, user: User = Depends(get_user_from_cookie),
+                             session: AsyncSession = Depends(get_async_session)):
     await manager.connect(websocket)
-    chat_id = chat.id
     date = datetime.now()
+
+    stmt = select(Message).where(Message.chat_id == chat_id).order_by(Message.date)
+    result = await session.execute(stmt)
+    messages = result.scalars().all()
+
+    for msg in messages:
+        message = {
+            'username': user.username,  # Можно заменить на username из базы данных, если нужно
+            'message': msg.message,
+            'time': msg.date.strftime("%H:%M")
+        }
+        await websocket.send_text(json.dumps(message))
+
     try:
         while True:
             data = await websocket.receive_text()
@@ -208,13 +219,19 @@ async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user
                 'message': data,
                 'time': date.strftime("%H:%M")
             }
+            print(data)
+            print(message)
             await manager.broadcast(json.dumps(message))
-            new_message = Message(chat_id=chat_id, user_id=user.id, message=data, date=date)
+            new_message = MessageCreate(chat_id=chat_id, user_id=user.id, message=data, date=date)
+            print(new_message)
             stmt = insert(Message).values(**new_message.dict())
+            print(stmt)
             result = await session.execute(stmt)
-            
             new_message_id = result.inserted_primary_key[0]
-            stmt = update(Chat).where(Chat.id == chat_id).values(messages=new_message_id)
+            chat = await session.get(Chat, chat_id)
+            list_messages = chat.messages
+            list_messages.append(new_message_id)
+            stmt = update(Chat).where(Chat.id == chat_id).values(messages=list_messages)
             await session.execute(stmt)
 
     except WebSocketDisconnect:
