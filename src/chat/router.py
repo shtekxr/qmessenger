@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect, WebSocketException, HTTPException
+from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect, WebSocketException, HTTPException, Body
 from sqlalchemy import select, insert, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
@@ -35,7 +35,7 @@ async def get_user_chats(request: Request, data_current_user: User = Depends(cur
 
 
 @router.post('/')
-async def create_chat(new_chat_name: str, data_current_user: User = Depends(current_user),
+async def create_chat(new_chat_name: str = Body(...), data_current_user: User = Depends(current_user),
                       session: AsyncSession = Depends(get_async_session)):
     new_chat = ChatCreate(name=new_chat_name)
     new_chat.user_ids.append(data_current_user.id)

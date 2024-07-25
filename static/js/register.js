@@ -1,4 +1,5 @@
-document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+document.getElementById('registrationForm').addEventListener('submit',
+    async function(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);

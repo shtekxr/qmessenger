@@ -28,8 +28,9 @@ async function createChat(event) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name: new_chat_name }), // Используйте ключ "name"
+            body: JSON.stringify(new_chat_name),
         });
+
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
