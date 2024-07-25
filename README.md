@@ -7,7 +7,16 @@ rizem(qmessenger) - это приложение для обмена сообще
 
 https://github.com/user-attachments/assets/c63baeee-3dae-4614-a894-08981ebdbfca
 
-
+## Использованные технологии
+- FastAPI
+- SQLAlchemy
+- БД: PostgreSQL
+- Asyncpg
+- Pydantic
+- Alembic
+- WebSockets
+- Nginx
+- Docker Compose
 
 ## Выполненные изменения
 - ✅ **Создание чатов**: Пользователи могут создавать чаты, указывая только имя чата.
