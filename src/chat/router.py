@@ -214,25 +214,26 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, user: User = De
     try:
         while True:
             data = await websocket.receive_text()
-            message = {
-                'username': user.username,
-                'message': data,
-                'time': date.strftime("%H:%M")
-            }
-            print(data)
-            print(message)
-            await manager.broadcast(json.dumps(message))
-            new_message = MessageCreate(chat_id=chat_id, user_id=user.id, message=data, date=date)
-            print(new_message)
-            stmt = insert(Message).values(**new_message.dict())
-            print(stmt)
-            result = await session.execute(stmt)
-            new_message_id = result.inserted_primary_key[0]
-            chat = await session.get(Chat, chat_id)
-            list_messages = chat.messages
-            list_messages.append(new_message_id)
-            stmt = update(Chat).where(Chat.id == chat_id).values(messages=list_messages)
-            await session.execute(stmt)
+            if data.strip() != '':
+                message = {
+                    'username': user.username,
+                    'message': data,
+                    'time': date.strftime("%H:%M")
+                }
+                print(data)
+                print(message)
+                await manager.broadcast(json.dumps(message))
+                new_message = MessageCreate(chat_id=chat_id, user_id=user.id, message=data, date=date)
+                print(new_message)
+                stmt = insert(Message).values(**new_message.dict())
+                print(stmt)
+                result = await session.execute(stmt)
+                new_message_id = result.inserted_primary_key[0]
+                chat = await session.get(Chat, chat_id)
+                list_messages = chat.messages
+                list_messages.append(new_message_id)
+                stmt = update(Chat).where(Chat.id == chat_id).values(messages=list_messages)
+                await session.execute(stmt)
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)

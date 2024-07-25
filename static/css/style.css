@@ -5,7 +5,8 @@
 body {
     font-family: 'Jua', sans-serif;
     /* background: linear-gradient(to bottom, #FFECDA, #FFB4AF); */
-    background-image: linear-gradient(to bottom, #FFECDA, #FFB4AF);
+    background-color: #000000;
+    background-image: linear-gradient(rgba(0, 152, 134, 0.8), rgba(24, 0, 136, 0.8));
     background-repeat: no-repeat;
     height: 100vh;
     /*margin: 10px 0;*/
@@ -22,10 +23,10 @@ body {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    /*background-color: #17153B;*/
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
+
     width: 80%;
 }
 
@@ -40,37 +41,28 @@ form {
 h1 {
     display: flex;
     justify-content: center;
-    color: #FFC6C6;
+    color: rgba(238, 238, 238, 0.5);
     font-size: 300%;
-
-    text-shadow:
-    6px 0 0 white, /*right */
-    0 6px 0 white, /*top */
-    -6px 0 0 white, /*left */
-    0 -6px 0 white; /*bottom */
 }
 
 h2 {
     display: flex;
     justify-content: center;
-    color: #FFC6C6;
+    color: rgba(238, 238, 238, 0.5);
     font-size: 150%;
 
-    text-shadow:
-    3px 0 0 white, /*right */
-    0 3px 0 white, /*top */
-    -3px 0 0 white, /*left */
-    0 -3px 0 white; /*bottom */
 }
 
 input {
     font-family: 'Jua', sans-serif;
+    color: #EEEEEE;
     font-size: 200%;
     text-align: center;
     margin: 10px 0;
     width: 50%;
     height: 10%;
-    border: white;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: black;
     border-radius: 20px;
 }
 
@@ -86,19 +78,13 @@ button {
 
     appearance: button;
     backface-visibility: hidden;
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 17px;
-    border-width: 0;
+    border: rgb(0, 0, 0);
+    margin: 5px;
     box-sizing: border-box;
-    color: #FFEFC6;
+    color: rgba(238, 238, 238, 0.5);
 
-
-
-    text-shadow:
-    2px 0 0 #FFCD4B, /*right */
-    0 2px 0 #FFCD4B, /*top */
-    -2px 0 0 #FFCD4B, /*left */
-    0 -2px 0 #FFCD4B; /*bottom */
 
     cursor: pointer;
     font-family: 'Jua', sans-serif;
@@ -125,16 +111,11 @@ button {
 .item {
     appearance: button;
     backface-visibility: hidden;
-    background-color: white;
+    background-color: #EEEEEE;
     border-radius: 17px;
     border-width: 0;
     box-sizing: border-box;
     color: #FFEFC6;
-    text-shadow:
-    2px 0 0 #FFCD4B, /*right */
-    0 2px 0 #FFCD4B, /*top */
-    -2px 0 0 #FFCD4B, /*left */
-    0 -2px 0 #FFCD4B; /*bottom */
 
     cursor: pointer;
     font-family: 'Jua', sans-serif;
@@ -166,7 +147,7 @@ button {
     width: 100%;
     /*height: 500px;*/
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.3);
+    /*background-color: #2E236C;*/
     border-radius: 20px;
     z-index: 1;
 }
@@ -182,6 +163,8 @@ button {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    width: 100%;
+    height: 100%;
 }
 .input-container input {
     margin: 0;
@@ -194,7 +177,7 @@ button {
     /*font-size: medium;*/
     align-self: center;
     border-radius: 0px;
-    width: 20%;
+    width: 50px;
     height: 100%;
 }
 
@@ -226,7 +209,7 @@ button {
     margin-right: auto;
     width: 50%;
     height: 50px;
-    background-color: white;
+    background-color: rgba(238, 238, 238, 0.5);
     border-radius: 20px;
 }
 
@@ -276,11 +259,16 @@ button {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
+    /*background-color: black;*/
+    /*background-image: linear-gradient(rgba(0, 152, 134, 0.3), rgba(24, 0, 136, 0.3));*/
+
 }
 
 .modal-content {
     /*background-color: #ffecda;*/
-    background-image: linear-gradient(to bottom, #FFECDA, #FFB4AF);
+    background-color: rgb(83, 169, 162);
+    /*background-image: linear-gradient(rgba(0, 152, 134, 0.3), rgba(24, 0, 136, 0.3));*/
+
     border-radius: 20px;
 }
 
@@ -313,22 +301,24 @@ button {
 }
 
 .username {
+    color: rgba(255, 255, 255, 0.5);
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .received-message {
     text-align: left;
-    background-color: #f1f1f1; /* Цвет фона для полученных сообщений */
+    background-color: rgba(0,0,0,0.3); /* Цвет фона для полученных сообщений */
     margin: 5px 0;
     padding: 10px;
     border-radius: 5px;
     max-width: 60%;
+    color: rgba(238, 238, 238, 0.8);
 }
 
 .sent-message {
     text-align: right;
-    background-color: #e7dfd1; /* Цвет фона для отправленных сообщений */
+    background-color: rgba(0,0,0,0.3); /* Цвет фона для отправленных сообщений */
     margin: 5px 0;
     padding: 10px;
     border-radius: 5px;

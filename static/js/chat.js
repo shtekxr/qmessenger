@@ -1,7 +1,7 @@
 const url = window.location.href;
 const chatID = url.match(/\/chats\/(\d+)/)[1];
-const ws = new WebSocket(`wss://rizem.ru/chats/${chatID}/ws`);
-// const ws = new WebSocket(`ws://localhost/chats/${chatID}/ws`);
+// const ws = new WebSocket(`wss://rizem.ru/chats/${chatID}/ws`);
+const ws = new WebSocket(`ws://localhost/chats/${chatID}/ws`);
 
 
 
