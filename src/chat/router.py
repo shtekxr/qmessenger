@@ -23,6 +23,14 @@ router = APIRouter(
 templates = Jinja2Templates(directory='templates')
 
 
+async def get_user_from_cookie(websocket: WebSocket, user_manager=Depends(get_user_manager)):
+    cookie = websocket.cookies.get("log")
+    user = await auth_backend.get_strategy().read_token(cookie, user_manager)
+    if not user or not user.is_active:
+        raise WebSocketException("User is not active")
+    yield user
+
+
 @router.get('/')
 async def get_user_chats(request: Request, data_current_user: User = Depends(current_user),
                          session: AsyncSession = Depends(get_async_session)):
@@ -34,11 +42,17 @@ async def get_user_chats(request: Request, data_current_user: User = Depends(cur
                                                      'chats': chats})
 
 
+@router.get('/')
+async def search_chats(request: Request, data_current_user: User = Depends(current_user),
+                       session: AsyncSession = Depends(get_async_session)):
+    pass
+
 @router.post('/')
 async def create_chat(new_chat_name: str = Body(...), data_current_user: User = Depends(current_user),
                       session: AsyncSession = Depends(get_async_session)):
     new_chat = ChatCreate(name=new_chat_name)
     new_chat.user_ids.append(data_current_user.id)
+    new_chat.admin_ids.append(data_current_user.id)
     new_chat.name = new_chat_name
     stmt = insert(Chat).values(**new_chat.dict())
     result = await session.execute(stmt)
@@ -56,7 +70,8 @@ async def create_chat(new_chat_name: str = Body(...), data_current_user: User = 
 
 
 @router.delete('/')
-async def delete_chat(chat_id: int = Chat.id, session: AsyncSession = Depends(get_async_session)):
+async def delete_chat(chat_id: int = Chat.id, session: AsyncSession = Depends(get_async_session),
+                      user: User = Depends(current_user)):
     chat = await session.get(Chat, chat_id)
     chat_users_query = select(User).where(User.id.in_(chat.user_ids))
     result = await session.execute(chat_users_query)
@@ -73,67 +88,85 @@ async def delete_chat(chat_id: int = Chat.id, session: AsyncSession = Depends(ge
 
 
 @router.get('/{chat_id}')
-async def get_chat(request: Request, chat_id: int, session: AsyncSession = Depends(get_async_session)):
+async def get_chat(request: Request, chat_id: int, session: AsyncSession = Depends(get_async_session),
+                   current_user: User = Depends(current_user)):
     chat = await session.get(Chat, chat_id)
-    users_id = chat.user_ids
-    users = []
-    for user_id in users_id:
-        user = await session.get(User, user_id)
-        users.append(user)
+    if current_user.id in chat.user_ids:
+        user_ids = chat.user_ids
+        admin_ids = chat.admin_ids
+        users = []
+        admins = []
+        for user_id in user_ids:
+            user = await session.get(User, user_id)
+            users.append(user)
+        for admin_id in admin_ids:
+            admin = await session.get(User, admin_id)
+            admins.append(admin)
 
-    return templates.TemplateResponse('chat.html', {'request': request, 'chat': chat, 'users': users})
+        return templates.TemplateResponse('chat.html', {'request': request, 'chat': chat,
+                                                        'users': users, 'admin_ids': admin_ids,
+                                                        'current_user': current_user})
+    else:
+        raise HTTPException(status_code=403, detail='You are not in the chat')
 
 
 @router.patch('/{chat_id}/{username}')
-async def invite_user(chat_id: int, username: str, session: AsyncSession = Depends(get_async_session)):
+async def invite_user(chat_id: int, username: str, session: AsyncSession = Depends(get_async_session),
+                      user: User = Depends(current_user)):
     chat = await session.get(Chat, chat_id)
-    result = await session.execute(select(User).where(User.username == username))
-    user = result.scalar_one_or_none()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
     if user.id in chat.user_ids:
-        raise HTTPException(status_code=400, detail="User already in chat")
+        result = await session.execute(select(User).where(User.username == username))
+        user = result.scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        if user.id in chat.user_ids:
+            raise HTTPException(status_code=400, detail="User already in chat")
 
-    chat_ids = user.chat_ids
-    chat_ids.append(chat_id)
-    stmt_user = update(User).where(User.username == username).values(chat_ids=chat_ids)
+        chat_ids = user.chat_ids
+        chat_ids.append(chat_id)
+        stmt_user = update(User).where(User.username == username).values(chat_ids=chat_ids)
 
-    user_ids = chat.user_ids
-    user_ids.append(user.id)
-    stmt_chat = update(Chat).where(Chat.id == chat_id).values(user_ids=user_ids)
+        user_ids = chat.user_ids
+        user_ids.append(user.id)
+        stmt_chat = update(Chat).where(Chat.id == chat_id).values(user_ids=user_ids)
 
-    await session.execute(stmt_user)
-    await session.execute(stmt_chat)
-    await session.commit()
+        await session.execute(stmt_user)
+        await session.execute(stmt_chat)
+        await session.commit()
 
-    return {"message": f"User {username} added to chat"}
+        return {"message": f"User {username} added to chat"}
+    else:
+        raise HTTPException(status_code=403, detail="You are not in the chat")
 
 
 @router.patch('/{chat_id}/kick/{username}')
-async def kick_user(chat_id: int, username: str, session: AsyncSession = Depends(get_async_session)):
+async def kick_user(chat_id: int, username: str, session: AsyncSession = Depends(get_async_session),
+                    user: User = Depends(current_user)):
     chat = await session.get(Chat, chat_id)
-    result = await session.execute(select(User).where(User.username == username))
-    user = result.scalar_one_or_none()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    if user.id not in chat.user_ids:
-        raise HTTPException(status_code=400, detail="User not in chat")
-    if chat_id not in user.chat_ids:
-        raise HTTPException(status_code=400, detail="User not in chat")
+    if user.id in chat.admin_ids:
+        result = await session.execute(select(User).where(User.username == username))
+        user = result.scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        if user.id not in chat.user_ids:
+            raise HTTPException(status_code=400, detail="User not in chat")
+        if chat_id not in user.chat_ids:
+            raise HTTPException(status_code=400, detail="User not in chat")
 
-    chat_ids = user.chat_ids
-    chat_ids.remove(chat_id)
-    stmt_user = update(User).where(User.username == username).values(chat_ids=chat_ids)
+        chat_ids = user.chat_ids
+        chat_ids.remove(chat_id)
+        stmt_user = update(User).where(User.username == username).values(chat_ids=chat_ids)
 
-    user_ids = chat.user_ids
-    user_ids.remove(user.id)
-    stmt_chat = update(Chat).where(Chat.id == chat_id).values(user_ids=user_ids)
+        user_ids = chat.user_ids
+        user_ids.remove(user.id)
+        stmt_chat = update(Chat).where(Chat.id == chat_id).values(user_ids=user_ids)
 
-    await session.execute(stmt_user)
-    await session.execute(stmt_chat)
-    await session.commit()
-
-    return {"message": f"User {username} kicked from chat"}
+        await session.execute(stmt_user)
+        await session.execute(stmt_chat)
+        await session.commit()
+        return {"message": f"User {username} kicked from chat"}
+    else:
+        raise HTTPException(status_code=403, detail="You can't kick users from chat")
 
 
 class ConnectionManager:
@@ -156,14 +189,6 @@ class ConnectionManager:
 
 
 manager = ConnectionManager()
-
-
-async def get_user_from_cookie(websocket: WebSocket, user_manager=Depends(get_user_manager)):
-    cookie = websocket.cookies.get("log")
-    user = await auth_backend.get_strategy().read_token(cookie, user_manager)
-    if not user or not user.is_active:
-        raise WebSocketException("User is not active")
-    yield user
 
 
 @router.websocket('/{chat_id}/ws')

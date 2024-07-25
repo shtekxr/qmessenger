@@ -27,7 +27,9 @@
                     {% for user in users %}
                     <div class="chat-user top-settings">
                         <h2>{{ user.username }}</h2>
+                        {% if current_user.id in admin_ids %}
                         <button onclick="kickUser('{{ user.username }}')">❌</button>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>

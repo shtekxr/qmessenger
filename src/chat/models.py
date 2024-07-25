@@ -15,6 +15,7 @@ class Chat(Base):
     name: Mapped[str] = mapped_column(String)
     desc: Mapped[str] = mapped_column(String)
     user_ids: Mapped[list] = mapped_column(ARRAY(Integer))
+    admin_ids: Mapped[list] = mapped_column(ARRAY(Integer))
     messages: Mapped[list] = mapped_column(ARRAY(Integer))
 
 

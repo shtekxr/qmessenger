@@ -7,6 +7,7 @@ class ChatCreate(BaseModel):
     name: str = ''
     desc: Optional[str] = ''
     user_ids: Optional[List[int]] = []
+    admin_ids: Optional[List[int]] = []
     messages: Optional[List[int]] = []
 
 
@@ -15,6 +16,7 @@ class ChatUpdate(BaseModel):
     name: Optional[str]
     desc: Optional[str]
     user_ids: Optional[List[int]]
+    admin_ids: Optional[List[int]]
     messages: Optional[List[int]]
 
 
