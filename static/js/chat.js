@@ -8,6 +8,7 @@ ws.onmessage = function(event) {
     const messages = document.getElementById('messages');
     const messageData = JSON.parse(event.data);
 
+
     const messageWrapper = document.createElement('div');
     const usernameElement = document.createElement('div');
     const messageElement = document.createElement('div');

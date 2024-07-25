@@ -1,4 +1,6 @@
 import json
+import time
+from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect, WebSocketException, HTTPException, Body
@@ -10,7 +12,7 @@ from starlette.templating import Jinja2Templates
 from src.auth.base_config import auth_backend
 from src.auth.manager import get_user_manager
 from src.auth.models import User
-from src.chat.models import Chat
+from src.chat.models import Chat, Message
 from src.chat.schemas import ChatCreate
 from src.database import get_async_session
 from src.depends import current_user
@@ -192,17 +194,30 @@ manager = ConnectionManager()
 
 
 @router.websocket('/{chat_id}/ws')
-async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user_from_cookie)):
+async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user_from_cookie),
+                             session: AsyncSession = Depends(get_async_session),
+                             chat: Chat = Depends(get_chat)):
     await manager.connect(websocket)
+    chat_id = chat.id
+    date = datetime.now()
     try:
         while True:
             data = await websocket.receive_text()
             message = {
                 'username': user.username,
-                'message': data
+                'message': data,
+                'time': date.strftime("%H:%M")
             }
             await manager.broadcast(json.dumps(message))
+            new_message = Message(chat_id=chat_id, user_id=user.id, message=data, date=date)
+            stmt = insert(Message).values(**new_message.dict())
+            result = await session.execute(stmt)
+            
+            new_message_id = result.inserted_primary_key[0]
+            stmt = update(Chat).where(Chat.id == chat_id).values(messages=new_message_id)
+            await session.execute(stmt)
+
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-
+        await session.commit()
 
