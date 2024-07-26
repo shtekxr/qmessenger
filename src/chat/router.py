@@ -194,7 +194,7 @@ manager = ConnectionManager()
 
 
 @router.websocket('/{chat_id}/ws')
-async def websocket_endpoint(websocket: WebSocket, chat_id: int, user: User = Depends(get_user_from_cookie),
+async def websocket_endpoint(websocket: WebSocket, chat_id: int, current_user: User = Depends(get_user_from_cookie),
                              session: AsyncSession = Depends(get_async_session)):
     await manager.connect(websocket)
     date = datetime.now()
@@ -203,9 +203,15 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, user: User = De
     result = await session.execute(stmt)
     messages = result.scalars().all()
 
+    user_ids = [msg.user_id for msg in messages]
+
+    users = await session.execute(select(User).where(User.id.in_(user_ids)))
+    users_dict = {user.id: user for user in users.scalars().all()}
+
     for msg in messages:
+        user = users_dict.get(msg.user_id)
         message = {
-            'username': user.username,  # Можно заменить на username из базы данных, если нужно
+            'username': user.username,
             'message': msg.message,
             'time': msg.date.strftime("%H:%M")
         }
@@ -216,14 +222,14 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, user: User = De
             data = await websocket.receive_text()
             if data.strip() != '':
                 message = {
-                    'username': user.username,
+                    'username': current_user.username,
                     'message': data,
                     'time': date.strftime("%H:%M")
                 }
                 print(data)
                 print(message)
                 await manager.broadcast(json.dumps(message))
-                new_message = MessageCreate(chat_id=chat_id, user_id=user.id, message=data, date=date)
+                new_message = MessageCreate(chat_id=chat_id, user_id=current_user.id, message=data, date=date)
                 print(new_message)
                 stmt = insert(Message).values(**new_message.dict())
                 print(stmt)
