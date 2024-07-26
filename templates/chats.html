@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>qmessenger</title>
+    <title>rizem</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div>
-        <h1>
-            {{ rizem }}
-        </h1>
+        <h2>
+            rizem
+        </h2>
     </div>
     <div>
         <div>
@@ -18,15 +18,16 @@
                 <input type="text" name="chat_search" id="chat_search">
                 <button>🔎</button>
             </div>
-            <button id="new_chat">create chat</button>
+            <button id="new_chat">+</button>
             <div id="modal" class="modal">
                 <div class="modal-content">
-                    <div class="top-modal">
-                        <button class="close">❌</button>
-                        <h2>chat name</h2>
-                    </div>
+                    <h2>Название чата</h2>
                     <input type="text" name="new_chat_name" id="new_chat_name">
-                    <button id="create-chat-btn">add chat</button>
+                    <div class="down-modal">
+                        <button class="close">❌Отмена</button>
+                        <button id="create-chat-btn">✅Создать</button>
+                    </div>
+
                 </div>
             </div>
         </div>

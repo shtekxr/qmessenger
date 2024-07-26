@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="top-panel">
-        <button id="top-back"><-</button>
+        <button id="top-back">⬅️</button>
         <h1 id="top-name">{{ chat.name }}</h1>
         <button id="top-settings">🎚️</button>
 
@@ -17,11 +17,11 @@
                 <div class="top-settings">
 
                     <button class="close" style="">❌</button>
-                    <h2>settings</h2>
+                    <h2>настройки</h2>
                     <button id="invite">+</button>
                 </div>
                 <div>
-                    <input type="text" name="invite_username" id="invite_username" placeholder="username to add">
+                    <input type="text" name="invite_username" id="invite_username" placeholder="имя пользователя">
                 </div>
                 <div class="list-user">
                     {% for user in users %}

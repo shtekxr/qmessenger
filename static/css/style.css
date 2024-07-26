@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 
 
 body {
-    font-family: 'Jua', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     /* background: linear-gradient(to bottom, #FFECDA, #FFB4AF); */
     background-color: #000000;
     background-image: linear-gradient(rgba(0, 152, 134, 0.8), rgba(24, 0, 136, 0.8));
@@ -18,17 +18,7 @@ body {
 }
 
 
-.modal-background {
-    display: none;
-}
 
-.modal-content {
-    /*background-color: #17153B;*/
-    margin: 15% auto;
-    padding: 20px;
-
-    width: 80%;
-}
 
 form {
     display: flex;
@@ -54,16 +44,20 @@ h2 {
 }
 
 input {
-    font-family: 'Jua', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     color: #EEEEEE;
     font-size: 200%;
     text-align: center;
     margin: 10px 0;
-    width: 50%;
-    height: 10%;
+    /*width: 50%;*/
+    /*height: 10%;*/
     background-color: rgba(0, 0, 0, 0.4);
     border: black;
     border-radius: 20px;
+}
+
+#chat_search {
+    width: 80%;
 }
 
 /*div {*/
@@ -75,8 +69,6 @@ input {
 
 
 button {
-
-    appearance: button;
     backface-visibility: hidden;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 17px;
@@ -87,15 +79,9 @@ button {
 
 
     cursor: pointer;
-    font-family: 'Jua', sans-serif;
-    font-size: 125%;
-    /*height: 10%;*/
-    /*width: 150px;*/
-    /*line-height: 1.15;*/
-    /*margin: 12px 0 0;*/
+    font-family: 'Open Sans', sans-serif;
     outline: none;
     overflow: hidden;
-    /*padding: 0 25px;*/
     position: relative;
     text-align: center;
     text-transform: none;
@@ -109,7 +95,6 @@ button {
 
 
 .item {
-    appearance: button;
     backface-visibility: hidden;
     background-color: #EEEEEE;
     border-radius: 17px;
@@ -230,21 +215,23 @@ button {
 
 .list-item {
     width: 90vw;
+    height: 7vh;
+    font-size: 50%;
 }
 
 #top-name {
-
+    font-size: 200%;
 }
 
 #top-settings {
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
     font-size: 50px;
 }
 
 #top-back {
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
     font-size: 50px;
 }
 
@@ -253,6 +240,7 @@ button {
     display: none;
     position: fixed;
     z-index: 3;
+
     left: 0;
     top: 0;
     width: 100%;
@@ -268,29 +256,74 @@ button {
     /*background-color: #ffecda;*/
     background-color: rgb(83, 169, 162);
     /*background-image: linear-gradient(rgba(0, 152, 134, 0.3), rgba(24, 0, 136, 0.3));*/
-
+    width: 80%;
     border-radius: 20px;
+
+    margin: 15% auto;
+    padding: 20px;
+}
+
+
+.modal-background {
+    display: none;
+}
+
+
+
+.modal-content input {
+    width: 100%;
+}
+
+#create-chat-btn {
+    display: flex;
+    align-items: center;
 }
 
 .top-settings {
+    display: flex;
+    flex-direction: row;
+    /*justify-content: space-between;*/
+    width: 80vw;
+}
+
+.top-settings h2 {
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+
+.top-settings .close {
+    float: left;
+}
+
+.top-settings #invite {
+    float: right;
+}
+
+.top-modal {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 80vw;
 }
 
-.top-modal {
+
+
+.down-modal {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width: 80vw;
+    flex-basis: 50%;
+    /*width: 80vw;*/
 }
 
 .close {
-    font-size: 15px;
-    text-align: center;
-    width: 65px;
-    height: 65px;
+
+    /*font-size: 15px;*/
+    /*text-align: center;*/
+    /*margin-right: 80%;*/
+    /*width: 65px;*/
+    /*height: 65px;*/
 }
 
 #invite {
@@ -328,6 +361,7 @@ button {
 
 #invite_username {
     width: 80vw;
+    height: 5vh;
 }
 
 .list-user {
@@ -341,7 +375,17 @@ button {
 .chat-user {
     width: 80vw;
     height: 10vh;
-    font-size: 25px;
+    font-size: 25%;
+    align-items: center;
+}
+
+.chat-user button {
+    width: 15%;
+    height: 50%;
+}
+
+#invite_username {
+    font-size: 100%;
 }
 
 #new_chat {
