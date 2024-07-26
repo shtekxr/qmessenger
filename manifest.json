@@ -1,0 +1,119 @@
+{
+  "name": "rizem",
+  "description": "chat app",
+  "start_url": "/",
+  "lang": "ru-RU",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icons/android-icon-192x192",
+      "sizes": "192x192",
+      "type": "png"
+    },
+    {
+      "src": "/icons/android-icon-144x144",
+      "sizes": "144x144",
+      "type": "png"
+    },
+    {
+      "src": "/icons/android-icon-96x96",
+      "sizes": "96x96",
+      "type": "png"
+    },
+    {
+      "src": "/icons/android-icon-72x72",
+      "sizes": "72x72",
+      "type": "png"
+    },
+    {
+      "src": "/icons/android-icon-48x48",
+      "sizes": "48x48",
+      "type": "png"
+    },
+    {
+      "src": "/icons/android-icon-36x36",
+      "sizes": "36x36",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-180x180",
+      "sizes": "180x180",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-152x152",
+      "sizes": "152x152",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-144x144",
+      "sizes": "144x144",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-120x120",
+      "sizes": "120x120",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-114x114",
+      "sizes": "114x114",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-76x76",
+      "sizes": "76x76",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-72x72",
+      "sizes": "72x72",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-60x60",
+      "sizes": "60x60",
+      "type": "png"
+    },
+    {
+      "src": "/icons/apple-icon-57x57",
+      "sizes": "57x57",
+      "type": "png"
+    },
+    {
+      "src": "/icons/favicon-96x96",
+      "sizes": "96x96",
+      "type": "png"
+    },
+    {
+      "src": "/icons/favicon-32x32",
+      "sizes": "32x32",
+      "type": "png"
+    },
+    {
+      "src": "/icons/favicon-16x16",
+      "sizes": "16x16",
+      "type": "png"
+    },
+    {
+      "src": "/icons/ms-icon-310x310",
+      "sizes": "310x310",
+      "type": "png"
+    },
+    {
+      "src": "/icons/ms-icon-150x150",
+      "sizes": "150x150",
+      "type": "png"
+    },
+    {
+      "src": "/icons/ms-icon-144x144",
+      "sizes": "144x144",
+      "type": "png"
+    },
+    {
+      "src": "/icons/ms-icon-70x70",
+      "sizes": "70x70",
+      "type": "png"
+    }
+  ]
+}
