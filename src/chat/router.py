@@ -1,6 +1,6 @@
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect, WebSocketException, HTTPException, Body
@@ -198,7 +198,7 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, chat_id: int, current_user: User = Depends(get_user_from_cookie),
                              session: AsyncSession = Depends(get_async_session)):
     await manager.connect(websocket)
-    date = datetime.now(timezone('Europe/Moscow'))
+    date = datetime.now() + timedelta(hours=3)
 
     stmt = select(Message).where(Message.chat_id == chat_id).order_by(Message.date)
     result = await session.execute(stmt)
