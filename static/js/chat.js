@@ -35,10 +35,6 @@ ws.onmessage = function(event) {
 
     scrollToBottom();
 
-    setTimeout(function() {
-        scrollToBottom();
-        console.log(123)
-    }, 2000);
 
 };
 function sendMessage(event) {
@@ -154,8 +150,8 @@ async function kickUser(username) {
 }
 
 
-window.onload = function() {
-    ws.onopen = function() {
-        scrollToBottom();
-    };
-}
+// window.onload = function() {
+//     ws.onopen = function() {
+//         scrollToBottom();
+//     };
+// }
