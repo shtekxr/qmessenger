@@ -3,7 +3,7 @@
 
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans';
     /* background: linear-gradient(to bottom, #FFECDA, #FFB4AF); */
     background-color: #000000;
     background-image: linear-gradient(rgba(0, 152, 134, 0.8), rgba(24, 0, 136, 0.8));
@@ -103,7 +103,7 @@ h2 {
 }
 
 input {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans';
     color: #EEEEEE;
     font-size: 200%;
     text-align: center;
@@ -136,7 +136,7 @@ button {
     box-sizing: border-box;
     color: rgba(238, 238, 238, 0.5);
     cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans';
     outline: none;
     /*overflow: hidden;*/
     position: relative;
@@ -159,7 +159,7 @@ button {
     /*color: #FFEFC6;*/
 
     cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans';
     font-size: 125%;
     height: 100px;
     line-height: 1.15;
