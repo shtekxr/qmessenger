@@ -9,7 +9,7 @@ ws.onmessage = function(event) {
     const messages = document.getElementById('messages');
     const messageData = JSON.parse(event.data);
 
-
+    const messageContainer = document.createElement('div')
     const messageWrapper = document.createElement('div');
     const usernameElement = document.createElement('div');
     const messageElement = document.createElement('div');
@@ -19,6 +19,7 @@ ws.onmessage = function(event) {
     messageElement.textContent = messageData.message;
     timeElement.textContent = messageData.time;
 
+    messageContainer.classList.add('message-container')
     usernameElement.classList.add('username');
     messageWrapper.classList.add('received-message');
     timeElement.classList.add('time');
@@ -27,7 +28,8 @@ ws.onmessage = function(event) {
     messageWrapper.appendChild(usernameElement);
     messageWrapper.appendChild(messageElement);
     messageWrapper.appendChild(timeElement);
-    messages.appendChild(messageWrapper);
+    messageContainer.appendChild(messageWrapper)
+    messages.appendChild(messageContainer);
 
 
 

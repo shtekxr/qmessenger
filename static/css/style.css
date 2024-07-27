@@ -396,7 +396,12 @@ button {
     margin-bottom: 5px;
 }
 
+.message-wrapper {
+    display: block;
+}
+
 .received-message {
+    display: inline-block;
     text-align: left;
     background-color: rgba(0,0,0,0.3); /* Цвет фона для полученных сообщений */
     margin: 5px 0;
@@ -448,4 +453,12 @@ button {
 #new_chat {
     width: 80vw;
     font-size: 30px;
+}
+
+.time {
+    align-self: flex-end;
+    float: right;
+    font-size: 11px;
+    color: #b0b0b0;
+
 }
