@@ -198,7 +198,7 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, chat_id: int, current_user: User = Depends(get_user_from_cookie),
                              session: AsyncSession = Depends(get_async_session)):
     await manager.connect(websocket)
-    date = datetime.now() + timedelta(hours=3)
+    date = datetime.now()
 
     stmt = select(Message).where(Message.chat_id == chat_id).order_by(Message.date)
     result = await session.execute(stmt)
@@ -230,7 +230,8 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, current_user: U
                 print(data)
                 print(message)
                 await manager.broadcast(json.dumps(message))
-                new_message = MessageCreate(chat_id=chat_id, user_id=current_user.id, message=data, date=date)
+                new_message = MessageCreate(chat_id=chat_id, user_id=current_user.id,
+                                            message=data, date=date + timedelta(hours=3))
                 print(new_message)
                 stmt = insert(Message).values(**new_message.dict())
                 print(stmt)

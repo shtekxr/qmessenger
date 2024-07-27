@@ -3,7 +3,10 @@ const chatID = url.match(/\/chats\/(\d+)/)[1];
 const ws = new WebSocket(`wss://rizem.ru/chats/${chatID}/ws`);
 // const ws = new WebSocket(`ws://localhost/chats/${chatID}/ws`);
 
-
+function scrollToBottom() {
+    const messages = document.getElementById('messages');
+    messages.scrollTop = messages.scrollHeight;
+}
 
 ws.onmessage = function(event) {
     const messages = document.getElementById('messages');
@@ -24,14 +27,18 @@ ws.onmessage = function(event) {
     messageWrapper.classList.add('received-message');
     timeElement.classList.add('time');
 
-
     messageWrapper.appendChild(usernameElement);
     messageWrapper.appendChild(messageElement);
     messageWrapper.appendChild(timeElement);
     messageContainer.appendChild(messageWrapper)
     messages.appendChild(messageContainer);
 
+    scrollToBottom();
 
+    setTimeout(function() {
+        scrollToBottom();
+        console.log(123)
+    }, 2000);
 
 };
 function sendMessage(event) {
@@ -54,6 +61,7 @@ function sendMessage(event) {
     ws.send(input.value);
     input.value = '';
     event.preventDefault();
+    messages.scrollTop = messages.scrollHeight;
 }
 
 const modal = document.querySelector('#modal');
@@ -143,4 +151,11 @@ async function kickUser(username) {
             alert('An error occurred while kicking the user.'); // В случае ошибки выводим сообщение пользователю
         }
     }
+}
+
+
+window.onload = function() {
+    ws.onopen = function() {
+        scrollToBottom();
+    };
 }
