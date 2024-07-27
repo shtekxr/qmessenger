@@ -9,3 +9,4 @@ alembic~=1.13.2
 fastapi-users[sqlalchemy]
 asyncpg
 slowapi
+pytz

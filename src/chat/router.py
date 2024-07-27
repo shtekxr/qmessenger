@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect, WebSocketException, HTTPException, Body
+from pytz import timezone
 from sqlalchemy import select, insert, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
@@ -197,7 +198,7 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, chat_id: int, current_user: User = Depends(get_user_from_cookie),
                              session: AsyncSession = Depends(get_async_session)):
     await manager.connect(websocket)
-    date = datetime.now()
+    date = datetime.now(timezone('Europe/Moscow'))
 
     stmt = select(Message).where(Message.chat_id == chat_id).order_by(Message.date)
     result = await session.execute(stmt)

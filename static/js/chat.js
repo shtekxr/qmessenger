@@ -1,7 +1,7 @@
 const url = window.location.href;
 const chatID = url.match(/\/chats\/(\d+)/)[1];
-const ws = new WebSocket(`wss://rizem.ru/chats/${chatID}/ws`);
-// const ws = new WebSocket(`ws://localhost/chats/${chatID}/ws`);
+// const ws = new WebSocket(`wss://rizem.ru/chats/${chatID}/ws`);
+const ws = new WebSocket(`ws://localhost/chats/${chatID}/ws`);
 
 
 
@@ -13,16 +13,20 @@ ws.onmessage = function(event) {
     const messageWrapper = document.createElement('div');
     const usernameElement = document.createElement('div');
     const messageElement = document.createElement('div');
+    const timeElement = document.createElement('div');
 
     usernameElement.textContent = messageData.username;
     messageElement.textContent = messageData.message;
+    timeElement.textContent = messageData.time;
 
     usernameElement.classList.add('username');
     messageWrapper.classList.add('received-message');
+    timeElement.classList.add('time');
 
 
     messageWrapper.appendChild(usernameElement);
     messageWrapper.appendChild(messageElement);
+    messageWrapper.appendChild(timeElement);
     messages.appendChild(messageWrapper);
 
 
