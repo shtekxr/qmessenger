@@ -41,7 +41,12 @@ function sendMessage(event) {
     const input = document.getElementById('messageText');
     const message = document.createElement('div');
     const content = document.createTextNode(input.value);
-    const time = new Date().toLocaleTimeString();
+
+    const now = new Date();
+
+    now.setHours(now.getHours() + 3);
+
+    const time = now.toLocaleTimeString();
 
     const timeElement = document.createElement('span');
     timeElement.textContent = ` (${time})`;

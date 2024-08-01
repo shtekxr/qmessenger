@@ -50,6 +50,7 @@ async def search_chats(request: Request, data_current_user: User = Depends(curre
                        session: AsyncSession = Depends(get_async_session)):
     pass
 
+
 @router.post('/')
 async def create_chat(new_chat_name: str = Body(...), data_current_user: User = Depends(current_user),
                       session: AsyncSession = Depends(get_async_session)):
